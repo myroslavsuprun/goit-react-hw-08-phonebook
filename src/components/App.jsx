@@ -1,24 +1,20 @@
 import React from 'react';
-
+import { Routes, Route } from 'react-router-dom';
 import { CssBaseline } from '@mui/material';
 
-import AddContactForm from './AddContactForm/AddContactForm';
-import Section from './Section/Section';
-import ContactsList from './ContactsList/ContactsList';
-import ContactsFilter from './ContactsFilter/ContactsFilter';
+import { Home } from 'pages';
+import { SharedLayout } from './SharedLayout';
 
 function App() {
   return (
     <>
+      w
       <CssBaseline />
-
-      <Section title="Phonebook">
-        <AddContactForm />
-      </Section>
-      <Section title="Contacts">
-        <ContactsFilter />
-        <ContactsList />
-      </Section>
+      <Routes>
+        <Route path="/" element={<SharedLayout />}>
+          <Route index element={<Home />} />
+        </Route>
+      </Routes>
     </>
   );
 }

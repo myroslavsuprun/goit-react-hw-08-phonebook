@@ -2,8 +2,7 @@
 import { useContacts } from 'hooks/useContacts';
 
 // Components
-import Loader from 'components/Loader/Loader';
-import Contact from 'components/Contact/Contact';
+import { Loader, Contact } from 'components';
 import { ContactsListStyled } from './ContactsList.styled';
 
 const ContactsList = () => {
