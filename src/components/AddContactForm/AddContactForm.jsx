@@ -24,7 +24,7 @@ const additionSchema = Yup.object().shape({
     ),
 });
 
-function AddContactForm({ toggleModal }) {
+function AddContactForm() {
   const theme = useTheme();
   const formik = useFormik({
     initialValues: {
@@ -43,7 +43,7 @@ function AddContactForm({ toggleModal }) {
       }
 
       addContact({ name: name, phone: number });
-      toggleModal();
+      // toggleModal();
       formik.resetForm();
     },
   });
