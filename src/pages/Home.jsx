@@ -1,21 +1,21 @@
-import { Button, Box, Typography, useTheme } from '@mui/material';
-
+import { Box, Typography, useTheme } from '@mui/material';
+//  Button
 import {
   AddContactForm,
   ContactsList,
   ContactsFilter,
-  Modal,
+  // Modal,
 } from 'components';
 
-import useModal from 'hooks/useModal';
+// import useModal from 'hooks/useModal';
 
 const Home = () => {
-  const { open: ifModalOpen, handleToggle: handleModalToggle } = useModal();
+  // const { open: ifModalOpen, handleToggle: handleModalToggle } = useModal();
   const theme = useTheme();
 
-  const handleOpenModal = () => {
-    handleModalToggle();
-  };
+  // const handleOpenModal = () => {
+  //   handleModalToggle();
+  // };
 
   return (
     <>
@@ -27,7 +27,8 @@ const Home = () => {
           gap: 10,
         }}
       >
-        <AddContactForm toggleModal={handleModalToggle} />
+        {/* toggleModal={handleModalToggle} */}
+        <AddContactForm />
         {/* Modal =( */}
         {/* <Button variant="contained" elevation="4" onClick={handleOpenModal}>
           Add new Contact
