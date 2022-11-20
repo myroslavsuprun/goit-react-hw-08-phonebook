@@ -1,6 +1,7 @@
 import { useDeleteContactMutation } from 'redux/contactsSlice';
 
-import { ContactsItem, ContactsButton } from './Contact.styled';
+import { ContactsItem } from './Contact.styled';
+import { Button } from '@mui/material';
 
 const Contact = ({ name, phone, id }) => {
   const [deleteContact, { isLoading }] = useDeleteContactMutation();
@@ -10,11 +11,15 @@ const Contact = ({ name, phone, id }) => {
       {name}
       <br />
       {phone}
-      <ContactsButton disabled={isLoading} onClick={() => deleteContact(id)}>
+      <Button
+        variant="outlined"
+        disabled={isLoading}
+        onClick={() => deleteContact(id)}
+      >
         {isLoading ? 'Deleting' : 'Delete'}
-      </ContactsButton>
+      </Button>
     </ContactsItem>
   );
 };
-// File -> Preferences -> Setting -> Features -> Terminal -> Inherit Env
+
 export default Contact;

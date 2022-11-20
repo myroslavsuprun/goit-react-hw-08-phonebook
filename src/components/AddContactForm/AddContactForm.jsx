@@ -1,103 +1,95 @@
-import React, { useState } from 'react';
-import { nanoid } from 'nanoid';
 import {
   useAddContactMutation,
   useGetContactsQuery,
 } from 'redux/contactsSlice';
 
-import {
-  AddContactWrapper,
-  Form,
-  FormLabel,
-  FormInput,
-  FormButtonSubmit,
-} from './AddContactFrom.styled';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
-const INITIAL_STATE = {
-  name: '',
-  number: '',
-};
+import { Box, TextField, Button, Typography, useTheme } from '@mui/material';
 
-const nameInputId = nanoid();
-const numberInputId = nanoid();
+const additionSchema = Yup.object().shape({
+  name: Yup.string()
+    .required("Please enter contact's name")
+    .matches(
+      /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
+      'Name may contain only letters, apostrophe, dash and spaces'
+    ),
 
-function AddContactForm() {
-  const [name, setName] = useState(INITIAL_STATE.name);
-  const [number, setNumber] = useState(INITIAL_STATE.number);
+  number: Yup.string()
+    .required("Please enter contact's number")
+    .matches(
+      /^(\+\d{1,2}\s?)?1?-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{3,6}$/,
+      'Please enter correct phone number with 9-13 digits'
+    ),
+});
+
+function AddContactForm({ toggleModal }) {
+  const theme = useTheme();
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      number: '',
+    },
+    validationSchema: additionSchema,
+    onSubmit: ({ name, number }) => {
+      const foundContact = contacts.find(contact => {
+        const contactName = contact.name.toLowerCase();
+        return contactName === name.toLowerCase();
+      });
+
+      if (foundContact) {
+        return alert(`${name} is already in contacts`);
+      }
+
+      addContact({ name: name, phone: number });
+      toggleModal();
+      formik.resetForm();
+    },
+  });
+
   const [addContact] = useAddContactMutation();
   const { data: contacts } = useGetContactsQuery();
 
-  const handleSubmit = e => {
-    e.preventDefault();
-
-    const foundContact = contacts.find(contactFromGlobalState => {
-      const nameFromGlobalState = contactFromGlobalState.name.toLowerCase();
-      return nameFromGlobalState === name.toLowerCase();
-    });
-
-    if (foundContact) {
-      reset();
-      return alert(`${name} is already in contacts`);
-    }
-
-    addContact({ name, phone: number });
-    reset();
-  };
-
-  const handleChange = e => {
-    const { name: inputName, value: inputValue } = e.target;
-
-    switch (inputName) {
-      case 'name':
-        setName(inputValue);
-        break;
-      case 'number':
-        setNumber(inputValue);
-        break;
-      default:
-        return;
-    }
-  };
-
-  const reset = () => {
-    setName(INITIAL_STATE.name);
-    setNumber(INITIAL_STATE.number);
-  };
-
   return (
-    <AddContactWrapper>
-      <Form onSubmit={handleSubmit}>
-        <FormLabel htmlFor={nameInputId}>
-          Name
-          <FormInput
-            type="text"
-            name="name"
-            placeholder="Enter name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-            id={nameInputId}
-            value={name}
-            onChange={handleChange}
-          />
-        </FormLabel>
-        <FormLabel htmlFor={numberInputId}>
-          Number
-          <FormInput
-            type="tel"
-            name="number"
-            placeholder="Enter phone number"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
-            id={numberInputId}
-            value={number}
-            onChange={handleChange}
-          />
-        </FormLabel>
-        <FormButtonSubmit>Add {name}</FormButtonSubmit>
-      </Form>
-    </AddContactWrapper>
+    <Box
+      component="form"
+      sx={{ display: 'flex', flexDirection: 'column' }}
+      onSubmit={formik.handleSubmit}
+    >
+      <Typography variant="h4" align="left" mb={theme.spacing(1)}>
+        Add new contact
+      </Typography>
+      <TextField
+        id="name"
+        name="name"
+        type="name"
+        label="Enter name"
+        error={formik.touched.name && formik.errors.name ? true : false}
+        value={formik.values.name}
+        helperText={formik.touched.name && formik.errors.name}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        variant="filled"
+        margin="normal"
+      />
+
+      <TextField
+        id="number"
+        name="number"
+        type="number"
+        label="Enter number"
+        error={formik.touched.number && formik.errors.number ? true : false}
+        value={formik.values.number}
+        helperText={formik.touched.number && formik.errors.number}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        variant="filled"
+        margin="normal"
+      />
+
+      <Button type="submit">Add {formik.name}</Button>
+    </Box>
   );
 }
 

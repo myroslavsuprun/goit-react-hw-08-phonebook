@@ -6,6 +6,9 @@ export const theme = createTheme({
   },
   typography: {
     fontFamily: 'Droid Serif',
+    h3: {
+      fontWeight: 500,
+    },
   },
 });
 

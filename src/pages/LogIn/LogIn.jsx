@@ -1,7 +1,9 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import { TextField } from '@mui/material';
+import { Typography, Box, useTheme, Button } from '@mui/material';
+
+import { AuthForm } from 'components';
 
 const logInSchema = Yup.object().shape({
   email: Yup.string()
@@ -21,6 +23,7 @@ const logInSchema = Yup.object().shape({
 });
 
 const LogIn = () => {
+  const theme = useTheme();
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -32,35 +35,34 @@ const LogIn = () => {
       formik.resetForm();
     },
   });
+
   return (
-    <form onSubmit={formik.handleSubmit}>
-      {formik.touched.password}
-      <TextField
-        error={formik.touched.email && formik.errors.email ? true : false}
-        id="email"
-        name="email"
-        type="email"
-        label="Email"
-        helperText={formik.touched.email && formik.errors.email}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.email}
-      />
+    <>
+      <Box
+        component="form"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: theme.spacing(1.5),
+          margin: '0 auto',
+          width: '340px',
+        }}
+        onSubmit={formik.handleSubmit}
+      >
+        <Typography align="center" variant="h3" gutterBottom>
+          Log In
+        </Typography>
+        <AuthForm formik={formik} />
 
-      <TextField
-        error={formik.touched.password && formik.errors.password ? true : false}
-        id="password"
-        name="password"
-        type="password"
-        label="Password"
-        helperText={formik.touched.password && formik.errors.password}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.password}
-      />
-
-      <button type="submit">Submit</button>
-    </form>
+        <Button
+          sx={{ width: '120px', mx: 'auto' }}
+          variant="contained"
+          type="submit"
+        >
+          Log In
+        </Button>
+      </Box>
+    </>
   );
 };
 
