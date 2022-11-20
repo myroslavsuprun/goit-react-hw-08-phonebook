@@ -3,7 +3,7 @@ import { useContacts } from 'hooks/useContacts';
 
 // Components
 import { Loader, Contact } from 'components';
-import { ContactsListStyled } from './ContactsList.styled';
+// import { ContactsListStyled } from './ContactsList.styled';
 
 const ContactsList = () => {
   const {
@@ -23,11 +23,11 @@ const ContactsList = () => {
   const onFullfilled = !isLoading && !isError && !isUninitialized;
 
   return (
-    <ContactsListStyled>
+    <>
       {onError && <p>{error.error}</p>}
       {onLoading && <Loader />}
       {onFullfilled && contacts.map(mapCallback)}
-    </ContactsListStyled>
+    </>
   );
 };
 

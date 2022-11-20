@@ -1,24 +1,31 @@
 import { useDeleteContactMutation } from 'redux/contactsSlice';
 
-import { ContactsItem } from './Contact.styled';
-import { Button } from '@mui/material';
+import { Button, Typography, Box } from '@mui/material';
 
 const Contact = ({ name, phone, id }) => {
   const [deleteContact, { isLoading }] = useDeleteContactMutation();
 
   return (
-    <ContactsItem>
-      {name}
-      <br />
-      {phone}
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Box>
+        <Typography variant="h6">{name}</Typography>
+        <Typography variant="h6">{phone}</Typography>
+      </Box>
       <Button
+        size="medium"
         variant="outlined"
         disabled={isLoading}
         onClick={() => deleteContact(id)}
       >
         {isLoading ? 'Deleting' : 'Delete'}
       </Button>
-    </ContactsItem>
+    </Box>
   );
 };
 

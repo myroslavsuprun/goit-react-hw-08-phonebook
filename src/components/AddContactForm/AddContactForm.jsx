@@ -54,10 +54,10 @@ function AddContactForm({ toggleModal }) {
   return (
     <Box
       component="form"
-      sx={{ display: 'flex', flexDirection: 'column' }}
+      sx={{ display: 'flex', flexDirection: 'column', width: 300 }}
       onSubmit={formik.handleSubmit}
     >
-      <Typography variant="h4" align="left" mb={theme.spacing(1)}>
+      <Typography variant="h5" align="left" mb={theme.spacing(1)}>
         Add new contact
       </Typography>
       <TextField
@@ -88,7 +88,13 @@ function AddContactForm({ toggleModal }) {
         margin="normal"
       />
 
-      <Button type="submit">Add {formik.name}</Button>
+      <Button
+        variant="contained"
+        sx={{ width: 100, alignSelf: 'center' }}
+        type="submit"
+      >
+        Add {formik.name}
+      </Button>
     </Box>
   );
 }

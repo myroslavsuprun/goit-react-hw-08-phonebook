@@ -1,34 +1,41 @@
 import React from 'react';
-import { nanoid } from 'nanoid';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
+import { TextField } from '@mui/material';
 
-import { selectFilter } from 'redux/selectors';
 import { updateFilter } from 'redux/filterSlice';
 
-import { FormLabel, FormInput } from './ContactsFilter.styled';
-
-const filterInputId = nanoid();
-
 const ContactsFilter = () => {
-  const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
 
+  const formik = useFormik({
+    initialValues: {
+      filterName: '',
+    },
+    handleChange: value => {
+      console.log(value);
+    },
+  });
+
   const onInputChange = e => {
+    formik.handleChange(e);
     let currentValue = e.target.value;
     dispatch(updateFilter(currentValue));
   };
 
   return (
-    <FormLabel key={filterInputId}>
-      Find contacts by name
-      <FormInput
-        value={filter}
-        type="text"
-        name="filter"
-        id={filterInputId}
-        onChange={onInputChange}
-      />
-    </FormLabel>
+    <TextField
+      id="filterName"
+      name="filterName"
+      type="filterName"
+      label="Search"
+      value={formik.values.filterName}
+      onChange={onInputChange}
+      variant="outlined"
+      margin="normal"
+      placeholder="Ivan Ivanov"
+      sx={{ mb: 2 }}
+    />
   );
 };
 
