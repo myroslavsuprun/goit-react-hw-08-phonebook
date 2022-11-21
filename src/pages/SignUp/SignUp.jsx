@@ -44,11 +44,11 @@ const SignUp = () => {
     validationSchema: signUpSchema,
     validateOnBlur: false,
     onSubmit: ({ email, username: name, password }) => {
-      // registerUser({
-      //   email,
-      //   name,
-      //   password,
-      // });
+      registerUser({
+        email,
+        name,
+        password,
+      });
       formik.resetForm();
     },
   });
