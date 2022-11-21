@@ -3,7 +3,6 @@ import { useContacts } from 'hooks/useContacts';
 
 // Components
 import { Loader, Contact } from 'components';
-// import { ContactsListStyled } from './ContactsList.styled';
 
 const ContactsList = () => {
   const {

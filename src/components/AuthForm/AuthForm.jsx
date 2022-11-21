@@ -5,7 +5,7 @@ const AuthForm = ({ formik }) => {
     <>
       <TextField
         fullWidth
-        error={formik.touched.email && formik.errors.email ? true : false}
+        error={Boolean(formik.touched.email && formik.errors.email)}
         id="email"
         name="email"
         type="email"
@@ -18,7 +18,7 @@ const AuthForm = ({ formik }) => {
 
       <TextField
         fullWidth
-        error={formik.touched.password && formik.errors.password ? true : false}
+        error={Boolean(formik.touched.password && formik.errors.password)}
         id="password"
         name="password"
         type="password"

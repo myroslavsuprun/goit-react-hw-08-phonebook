@@ -1,8 +1,11 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-
 import { Typography, TextField, Box, useTheme, Button } from '@mui/material';
+
 import { AuthForm } from 'components';
+import { useRegisterMutation } from 'redux/authSlice';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const signUpSchema = Yup.object().shape({
   username: Yup.string().required('Please, enter your username'),
@@ -23,6 +26,14 @@ const signUpSchema = Yup.object().shape({
 });
 
 const SignUp = () => {
+  const [registerUser, registerStatus] = useRegisterMutation();
+
+  useEffect(() => {
+    if (registerStatus.isSuccess) {
+      toast.success('You have successfully registered');
+    }
+  }, [registerStatus]);
+
   const theme = useTheme();
   const formik = useFormik({
     initialValues: {
@@ -31,53 +42,55 @@ const SignUp = () => {
       username: '',
     },
     validationSchema: signUpSchema,
-    onSubmit: values => {
-      console.log(JSON.stringify(values, null, 2));
+    validateOnBlur: false,
+    onSubmit: ({ email, username: name, password }) => {
+      // registerUser({
+      //   email,
+      //   name,
+      //   password,
+      // });
       formik.resetForm();
     },
   });
+  console.log();
 
   return (
-    <>
-      <Box
-        component="form"
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          margin: '0 auto',
-          gap: theme.spacing(1.5),
-          width: '340px',
-        }}
-        onSubmit={formik.handleSubmit}
-      >
-        <Typography align="center" variant="h3" gutterBottom>
-          Sign Up
-        </Typography>
-        <TextField
-          fullWidth
-          error={
-            formik.touched.username && formik.errors.username ? true : false
-          }
-          id="username"
-          name="username"
-          type="username"
-          label="Username"
-          helperText={formik.touched.username && formik.errors.username}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.username}
-        />
+    <Box
+      component="form"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        margin: '0 auto',
+        gap: theme.spacing(1.5),
+        width: '340px',
+      }}
+      onSubmit={formik.handleSubmit}
+    >
+      <Typography align="center" variant="h3" gutterBottom>
+        Sign Up
+      </Typography>
+      <TextField
+        fullWidth
+        error={Boolean(formik.touched.username && formik.errors.username)}
+        id="username"
+        name="username"
+        type="username"
+        label="Username"
+        helperText={formik.touched.username && formik.errors.username}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        value={formik.values.username}
+      />
 
-        <AuthForm formik={formik} />
-        <Button
-          sx={{ width: '120px', mx: 'auto' }}
-          variant="contained"
-          type="submit"
-        >
-          Sign Up
-        </Button>
-      </Box>
-    </>
+      <AuthForm formik={formik} />
+      <Button
+        sx={{ width: '120px', mx: 'auto' }}
+        variant="contained"
+        type="submit"
+      >
+        Sign Up
+      </Button>
+    </Box>
   );
 };
 

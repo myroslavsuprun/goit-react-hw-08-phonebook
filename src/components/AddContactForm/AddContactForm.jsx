@@ -7,6 +7,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import { Box, TextField, Button, Typography, useTheme } from '@mui/material';
+import { toast } from 'react-toastify';
 
 const additionSchema = Yup.object().shape({
   name: Yup.string()
@@ -41,8 +42,9 @@ function AddContactForm() {
       if (foundContact) {
         return alert(`${name} is already in contacts`);
       }
+      toast.success('Contact has been successfully added!');
 
-      addContact({ name: name, phone: number });
+      addContact({ name, phone: number });
       // toggleModal();
       formik.resetForm();
     },
@@ -58,7 +60,7 @@ function AddContactForm() {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          width: 300,
+          width: 'inherit',
           position: 'fixed',
         }}
         onSubmit={formik.handleSubmit}

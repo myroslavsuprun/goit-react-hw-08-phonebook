@@ -4,25 +4,26 @@ import * as Yup from 'yup';
 import { Typography, Box, useTheme, Button } from '@mui/material';
 
 import { AuthForm } from 'components';
+import { useLoginMutation } from 'redux/authSlice';
+import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 
 const logInSchema = Yup.object().shape({
   email: Yup.string()
     .email('Correct your email to "mail@mail.com"')
     .required('Please, enter your email'),
-  password: Yup.string()
-    .required('Please, enter your password')
-    .matches(/^[A-Za-z\d@$!%*#?&]{8,}$/, 'Please, enter at least 8 symbols')
-    .matches(
-      /^(?=.*[A-Z])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Please, use at least one capital letter'
-    )
-    .matches(
-      /^(?=.*\d)(?=.*[0-9])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Please, enter at least one number'
-    ),
+  password: Yup.string().required('Please, enter your password'),
 });
 
 const LogIn = () => {
+  const [loginUser, loginStatus] = useLoginMutation();
+
+  useEffect(() => {
+    if (loginStatus.isSuccess) {
+      toast.success('You have successfully logged in');
+    }
+  }, [loginStatus]);
+
   const theme = useTheme();
   const formik = useFormik({
     initialValues: {
@@ -30,8 +31,8 @@ const LogIn = () => {
       password: '',
     },
     validationSchema: logInSchema,
-    onSubmit: values => {
-      console.log(JSON.stringify(values, null, 2));
+    onSubmit: ({ email, password }) => {
+      loginUser({ email, password });
       formik.resetForm();
     },
   });

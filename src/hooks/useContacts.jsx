@@ -16,7 +16,6 @@ export const useContacts = () => {
         if (filter === '') {
           return contacts;
         }
-
         return contacts.filter(contact => {
           const contactName = contact.name.toLowerCase();
           return contactName.includes(filter.toLowerCase());
