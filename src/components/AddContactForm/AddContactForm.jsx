@@ -52,49 +52,56 @@ function AddContactForm() {
   const { data: contacts } = useGetContactsQuery();
 
   return (
-    <Box
-      component="form"
-      sx={{ display: 'flex', flexDirection: 'column', width: 300 }}
-      onSubmit={formik.handleSubmit}
-    >
-      <Typography variant="h5" align="left" mb={theme.spacing(1)}>
-        Add new contact
-      </Typography>
-      <TextField
-        id="name"
-        name="name"
-        type="name"
-        label="Enter name"
-        error={formik.touched.name && formik.errors.name ? true : false}
-        value={formik.values.name}
-        helperText={formik.touched.name && formik.errors.name}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        variant="filled"
-        margin="normal"
-      />
-
-      <TextField
-        id="number"
-        name="number"
-        type="number"
-        label="Enter number"
-        error={formik.touched.number && formik.errors.number ? true : false}
-        value={formik.values.number}
-        helperText={formik.touched.number && formik.errors.number}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        variant="filled"
-        margin="normal"
-      />
-
-      <Button
-        variant="contained"
-        sx={{ width: 100, alignSelf: 'center' }}
-        type="submit"
+    <Box sx={{ position: 'relative', width: 300 }}>
+      <Box
+        component="form"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: 300,
+          position: 'fixed',
+        }}
+        onSubmit={formik.handleSubmit}
       >
-        Add {formik.name}
-      </Button>
+        <Typography variant="h5" align="left" mb={theme.spacing(1)}>
+          Add new contact
+        </Typography>
+        <TextField
+          id="name"
+          name="name"
+          type="name"
+          label="Enter name"
+          error={formik.touched.name && formik.errors.name ? true : false}
+          value={formik.values.name}
+          helperText={formik.touched.name && formik.errors.name}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          variant="filled"
+          margin="normal"
+        />
+
+        <TextField
+          id="number"
+          name="number"
+          type="number"
+          label="Enter number"
+          error={formik.touched.number && formik.errors.number ? true : false}
+          value={formik.values.number}
+          helperText={formik.touched.number && formik.errors.number}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          variant="filled"
+          margin="normal"
+        />
+
+        <Button
+          variant="contained"
+          sx={{ width: 100, alignSelf: 'center' }}
+          type="submit"
+        >
+          Add {formik.name}
+        </Button>
+      </Box>
     </Box>
   );
 }
