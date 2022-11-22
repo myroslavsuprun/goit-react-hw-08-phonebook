@@ -24,5 +24,16 @@ export const credentialsSlice = createSlice({
         state.user = payload.user;
       }
     );
+    builder.addMatcher(authApi.endpoints.logout.matchFulfilled, () => {
+      return initialState;
+    });
+    builder.addMatcher(
+      authApi.endpoints.currentUser.matchFulfilled,
+      (state, { payload }) => {
+        state.user = payload;
+      }
+    );
   },
 });
+
+export const { clearCredentials } = credentialsSlice.actions;

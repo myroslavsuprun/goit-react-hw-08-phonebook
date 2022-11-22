@@ -7,6 +7,7 @@ import { AuthForm } from 'components';
 import { useLoginMutation } from 'redux/authSlice';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const logInSchema = Yup.object().shape({
   email: Yup.string()
@@ -17,12 +18,14 @@ const logInSchema = Yup.object().shape({
 
 const LogIn = () => {
   const [loginUser, loginStatus] = useLoginMutation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (loginStatus.isSuccess) {
       toast.success('You have successfully logged in');
+      navigate('/');
     }
-  }, [loginStatus]);
+  }, [loginStatus, navigate]);
 
   const theme = useTheme();
   const formik = useFormik({
@@ -54,13 +57,22 @@ const LogIn = () => {
           Log In
         </Typography>
         <AuthForm formik={formik} />
-
+        {loginStatus.error && (
+          <Typography
+            variant="body1"
+            color={theme.palette.warning.main}
+            align="center"
+          >
+            Please enter correct login or password
+          </Typography>
+        )}
         <Button
+          disabled={loginStatus.isLoading}
           sx={{ width: '120px', mx: 'auto' }}
           variant="contained"
           type="submit"
         >
-          Log In
+          {loginStatus.isLoading ? 'Logging in' : 'Log in'}
         </Button>
       </Box>
     </>

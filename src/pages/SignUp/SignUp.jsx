@@ -6,6 +6,7 @@ import { AuthForm } from 'components';
 import { useRegisterMutation } from 'redux/authSlice';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const signUpSchema = Yup.object().shape({
   username: Yup.string().required('Please, enter your username'),
@@ -27,12 +28,14 @@ const signUpSchema = Yup.object().shape({
 
 const SignUp = () => {
   const [registerUser, registerStatus] = useRegisterMutation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (registerStatus.isSuccess) {
       toast.success('You have successfully registered');
+      navigate('/');
     }
-  }, [registerStatus]);
+  }, [registerStatus, navigate]);
 
   const theme = useTheme();
   const formik = useFormik({
@@ -72,11 +75,11 @@ const SignUp = () => {
       <TextField
         fullWidth
         error={Boolean(formik.touched.username && formik.errors.username)}
+        helperText={formik.touched.username && formik.errors.username}
         id="username"
         name="username"
         type="username"
         label="Username"
-        helperText={formik.touched.username && formik.errors.username}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         value={formik.values.username}
@@ -88,7 +91,7 @@ const SignUp = () => {
         variant="contained"
         type="submit"
       >
-        Sign Up
+        {registerStatus.isLoading ? 'Signing up' : 'Sign up'}
       </Button>
     </Box>
   );

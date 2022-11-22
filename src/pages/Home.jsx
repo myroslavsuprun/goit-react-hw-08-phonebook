@@ -1,56 +1,53 @@
-import { Box, Typography, useTheme } from '@mui/material';
-//  Button
-import {
-  AddContactForm,
-  ContactsList,
-  ContactsFilter,
-  // Modal,
-} from 'components';
-
-// import useModal from 'hooks/useModal';
+import { Box, Typography, Link } from '@mui/material';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectCredentials } from 'redux/selectors';
+import { useEffect } from 'react';
 
 const Home = () => {
-  // const { open: ifModalOpen, handleToggle: handleModalToggle } = useModal();
-  const theme = useTheme();
+  const { token } = useSelector(selectCredentials);
+  const navigate = useNavigate();
 
-  // const handleOpenModal = () => {
-  //   handleModalToggle();
-  // };
+  useEffect(() => {
+    if (token) {
+      navigate('/contacts');
+    }
+  }, [navigate, token]);
 
   return (
-    <>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'start',
-          justifyContent: 'center',
-          gap: 10,
-        }}
-      >
-        {/* toggleModal={handleModalToggle} */}
-        <AddContactForm />
-        {/* Modal =( */}
-        {/* <Button variant="contained" elevation="4" onClick={handleOpenModal}>
-          Add new Contact
-        </Button> */}
-        {/* <Modal open={ifModalOpen} handleClose={handleModalToggle}>
-          <AddContactForm toggleModal={handleModalToggle} />
-        </Modal> */}
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: 250,
-          }}
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+      }}
+    >
+      <Typography variant="h4" mb={1}>
+        Please{' '}
+        <Link
+          fontWeight={600}
+          underline="none"
+          ml={0.25}
+          component={NavLink}
+          to="/login"
         >
-          <Typography variant="h5" align="left" mb={theme.spacing(1)}>
-            Contacts
-          </Typography>
-          <ContactsFilter />
-          <ContactsList />
-        </Box>
-      </Box>
-    </>
+          log in
+        </Link>{' '}
+        to see your contacts
+      </Typography>
+      <Typography textTransform="uppercase" fontSize={16} variant="h6">
+        Aren't signed up yet?
+        <Link
+          fontWeight={600}
+          underline="none"
+          component={NavLink}
+          to="/register"
+        >
+          {' '}
+          Sign up.
+        </Link>
+      </Typography>
+    </Box>
   );
 };
 

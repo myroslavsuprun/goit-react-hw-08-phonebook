@@ -11,12 +11,12 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
-import { filterReducer } from './filterSlice';
+import { filterSlice } from './filterSlice';
 import { credentialsSlice } from './credentialsSlice';
 import { contactsApi } from './contactsSlice';
 import { authApi } from './authSlice';
 
-const persistConfig = { key: 'authCredentials', storage };
+const persistConfig = { key: 'authToken', storage, whitelist: ['token'] };
 const persistedReducer = persistReducer(
   persistConfig,
   credentialsSlice.reducer
@@ -27,7 +27,7 @@ export const store = configureStore({
     [contactsApi.reducerPath]: contactsApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [credentialsSlice.name]: persistedReducer,
-    filter: filterReducer,
+    [filterSlice.name]: filterSlice.reducer,
   },
 
   middleware: getDefaultMiddleware => [

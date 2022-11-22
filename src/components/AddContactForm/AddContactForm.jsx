@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 
 import { Box, TextField, Button, Typography, useTheme } from '@mui/material';
 import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 
 const additionSchema = Yup.object().shape({
   name: Yup.string()
@@ -26,7 +27,10 @@ const additionSchema = Yup.object().shape({
 });
 
 function AddContactForm() {
+  const [addContact, addContactStatus] = useAddContactMutation();
+  const { data: contacts } = useGetContactsQuery();
   const theme = useTheme();
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -42,16 +46,18 @@ function AddContactForm() {
       if (foundContact) {
         return alert(`${name} is already in contacts`);
       }
-      toast.success('Contact has been successfully added!');
 
-      addContact({ name, phone: number });
+      addContact({ name, number });
       // toggleModal();
       formik.resetForm();
     },
   });
 
-  const [addContact] = useAddContactMutation();
-  const { data: contacts } = useGetContactsQuery();
+  useEffect(() => {
+    if (addContactStatus.isSuccess) {
+      toast.success('Contact has been successfully added!');
+    }
+  }, [addContactStatus]);
 
   return (
     <Box sx={{ position: 'relative', width: 300 }}>
@@ -97,11 +103,12 @@ function AddContactForm() {
         />
 
         <Button
+          disabled={addContactStatus.isLoading}
           variant="contained"
           sx={{ width: 100, alignSelf: 'center' }}
           type="submit"
         >
-          Add {formik.name}
+          {addContactStatus.isLoading ? `Adding` : `Add`}
         </Button>
       </Box>
     </Box>
