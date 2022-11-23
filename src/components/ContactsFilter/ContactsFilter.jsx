@@ -1,6 +1,6 @@
-import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
+
 import { TextField } from '@mui/material';
 
 import { updateFilter } from 'redux/filterSlice';
@@ -11,9 +11,6 @@ const ContactsFilter = () => {
   const formik = useFormik({
     initialValues: {
       filterName: '',
-    },
-    handleChange: value => {
-      console.log(value);
     },
   });
 

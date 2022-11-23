@@ -1,11 +1,15 @@
+import PropTypes from 'prop-types';
+import * as Yup from 'yup';
+
+// Hooks
+import { useEffect } from 'react';
 import {
   useAddContactMutation,
   useGetContactsQuery,
 } from 'redux/contactsSlice';
-
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 
+// Components
 import {
   Box,
   TextField,
@@ -15,10 +19,8 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { toast } from 'react-toastify';
-import { useEffect } from 'react';
-import PropTypes from 'prop-types';
 
-const additionSchema = Yup.object().shape({
+const validationSchema = Yup.object().shape({
   name: Yup.string()
     .required("Please enter contact's name")
     .matches(
@@ -46,7 +48,7 @@ function AddContactForm({ toggleModal }) {
       name: '',
       number: '',
     },
-    validationSchema: additionSchema,
+    validationSchema: validationSchema,
     onSubmit: ({ name, number }) => {
       const foundContact = contacts.find(contact => {
         const contactName = contact.name.toLowerCase();

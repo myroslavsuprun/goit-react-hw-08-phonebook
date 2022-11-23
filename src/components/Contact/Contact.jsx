@@ -8,6 +8,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 const Contact = ({ name, phone, id }) => {
   const [deleteContact, { isLoading }] = useDeleteContactMutation();
 
+  const handleDeleteClick = () => {
+    deleteContact(id);
+  };
+
   return (
     <Box
       sx={{
@@ -25,7 +29,7 @@ const Contact = ({ name, phone, id }) => {
       <IconButton
         disabled={isLoading}
         color={!isLoading ? 'primary' : 'none'}
-        onClick={() => deleteContact(id)}
+        onClick={handleDeleteClick}
         aria-label="delete"
         size="large"
       >

@@ -1,15 +1,21 @@
+// Hooks
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Typography, TextField, Box, useTheme, Button } from '@mui/material';
-
-import { AuthForm } from 'components';
 import { useRegisterMutation } from 'redux/authSlice';
 import { useEffect } from 'react';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+
+// Components
+import { Typography, TextField, Box, useTheme, Button } from '@mui/material';
+import { AuthForm } from 'components';
+
+// Other
+import * as Yup from 'yup';
+import { toast } from 'react-toastify';
+
+// Constants
 import ROUTES from 'constants/routes';
 
-const signUpSchema = Yup.object().shape({
+const validationSchema = Yup.object().shape({
   username: Yup.string().required('Please, enter your username'),
   email: Yup.string()
     .email('Correct your email to "mail@mail.com"')
@@ -37,7 +43,7 @@ const SignUp = () => {
       password: '',
       username: '',
     },
-    validationSchema: signUpSchema,
+    validationSchema: validationSchema,
     validateOnBlur: false,
     onSubmit: ({ email, username: name, password }) => {
       registerUser({

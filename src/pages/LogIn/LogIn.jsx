@@ -15,7 +15,7 @@ import ROUTES from 'constants/routes';
 // Form validation
 import * as Yup from 'yup';
 
-const logInSchema = Yup.object().shape({
+const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email('Correct your email to "mail@mail.com"')
     .required('Please, enter your email'),
@@ -31,7 +31,7 @@ const LogIn = () => {
       email: '',
       password: '',
     },
-    validationSchema: logInSchema,
+    validationSchema: validationSchema,
     onSubmit: ({ email, password }) => {
       loginUser({ email, password });
     },
