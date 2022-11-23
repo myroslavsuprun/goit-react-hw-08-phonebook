@@ -5,7 +5,6 @@ import useCredentials from 'hooks/useCredentials';
 // Components
 import { Link as RouterLink } from 'react-router-dom';
 import {
-  useTheme,
   AppBar as AppBarStyled,
   Box,
   IconButton,
@@ -29,7 +28,6 @@ import { useCurrentUserQuery } from 'redux/authSlice';
 import { Loader } from 'components/Loader';
 
 const AppBar = () => {
-  const theme = useTheme();
   const { isLoading: ifCurrentUserLoading } = useCurrentUserQuery();
   const { ifLoggedIn, user } = useCredentials();
   const [logout, logoutStatus] = useLogoutMutation();
@@ -46,7 +44,7 @@ const AppBar = () => {
 
   return (
     <>
-      <Box sx={{ height: '80px', marginBottom: theme.spacing(5) }} />
+      <Box sx={{ height: '64px', marginBottom: 5 }} />
       <AppBarStyled component="nav">
         <Toolbar>
           <IconButton
