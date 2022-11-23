@@ -20,14 +20,6 @@ const logInSchema = Yup.object().shape({
 const LogIn = () => {
   const [loginUser, loginStatus] = useLoginMutation();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (loginStatus.isSuccess) {
-      toast.success('You have successfully logged in');
-      navigate(ROUTES.contacts);
-    }
-  }, [loginStatus, navigate]);
-
   const theme = useTheme();
   const formik = useFormik({
     initialValues: {
@@ -37,9 +29,16 @@ const LogIn = () => {
     validationSchema: logInSchema,
     onSubmit: ({ email, password }) => {
       loginUser({ email, password });
-      formik.resetForm();
     },
   });
+
+  useEffect(() => {
+    if (loginStatus.isSuccess) {
+      formik.resetForm();
+      toast.success('You have successfully logged in');
+      navigate(ROUTES.contacts);
+    }
+  }, [loginStatus, navigate, formik]);
 
   return (
     <>

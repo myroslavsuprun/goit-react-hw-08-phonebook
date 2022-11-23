@@ -30,14 +30,6 @@ const signUpSchema = Yup.object().shape({
 const SignUp = () => {
   const [registerUser, registerStatus] = useRegisterMutation();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (registerStatus.isSuccess) {
-      toast.success('You have successfully registered');
-      navigate(ROUTES.contacts);
-    }
-  }, [registerStatus, navigate]);
-
   const theme = useTheme();
   const formik = useFormik({
     initialValues: {
@@ -53,9 +45,16 @@ const SignUp = () => {
         name,
         password,
       });
-      formik.resetForm();
     },
   });
+
+  useEffect(() => {
+    if (registerStatus.isSuccess) {
+      formik.resetForm();
+      toast.success('You have successfully registered');
+      navigate(ROUTES.contacts);
+    }
+  }, [registerStatus, navigate, formik]);
 
   return (
     <Box
@@ -86,6 +85,16 @@ const SignUp = () => {
       />
 
       <AuthForm formik={formik} />
+      {registerStatus.error && (
+        <Typography
+          variant="body1"
+          color={theme.palette.warning.main}
+          align="center"
+        >
+          This user is already registered
+        </Typography>
+      )}
+
       <Button
         sx={{ width: '120px', mx: 'auto' }}
         variant="contained"
