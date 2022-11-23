@@ -1,19 +1,8 @@
 import { Box, Typography, Link } from '@mui/material';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { selectCredentials } from 'redux/selectors';
-import { useEffect } from 'react';
+import ROUTES from 'constants/routes';
+import { NavLink } from 'react-router-dom';
 
 const Home = () => {
-  const { token } = useSelector(selectCredentials);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (token) {
-      navigate('/contacts');
-    }
-  }, [navigate, token]);
-
   return (
     <Box
       sx={{
@@ -29,7 +18,7 @@ const Home = () => {
           underline="none"
           ml={0.25}
           component={NavLink}
-          to="/login"
+          to={ROUTES.login}
         >
           log in
         </Link>{' '}
@@ -41,7 +30,7 @@ const Home = () => {
           fontWeight={600}
           underline="none"
           component={NavLink}
-          to="/register"
+          to={ROUTES.register}
         >
           {' '}
           Sign up.

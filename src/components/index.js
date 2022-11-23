@@ -7,4 +7,6 @@ export * from './Loader';
 export * from './SharedLayout';
 export * from './AuthForm';
 export * from './Modal';
+export * from './RestrictedRoute';
+export * from './PrivateRoute';
 export { default as App } from './App';

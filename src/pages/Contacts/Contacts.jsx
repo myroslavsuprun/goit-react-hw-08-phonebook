@@ -1,8 +1,4 @@
 // import useModal from 'hooks/useModal';
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { selectCredentials } from 'redux/selectors';
 //  Button
 import { useTheme, Box, Typography } from '@mui/material';
 import {
@@ -13,15 +9,6 @@ import {
 } from 'components';
 
 const Contacts = () => {
-  const { token } = useSelector(selectCredentials);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!token) {
-      navigate('/');
-    }
-  }, [navigate, token]);
-
   // const { open: ifModalOpen, handleToggle: handleModalToggle } = useModal();
   const theme = useTheme();
 

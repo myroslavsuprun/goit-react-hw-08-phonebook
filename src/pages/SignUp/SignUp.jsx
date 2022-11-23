@@ -7,6 +7,7 @@ import { useRegisterMutation } from 'redux/authSlice';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import ROUTES from 'constants/routes';
 
 const signUpSchema = Yup.object().shape({
   username: Yup.string().required('Please, enter your username'),
@@ -33,7 +34,7 @@ const SignUp = () => {
   useEffect(() => {
     if (registerStatus.isSuccess) {
       toast.success('You have successfully registered');
-      navigate('/');
+      navigate(ROUTES.contacts);
     }
   }, [registerStatus, navigate]);
 
@@ -55,7 +56,6 @@ const SignUp = () => {
       formik.resetForm();
     },
   });
-  console.log();
 
   return (
     <Box

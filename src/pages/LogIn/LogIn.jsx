@@ -8,6 +8,7 @@ import { useLoginMutation } from 'redux/authSlice';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ROUTES from 'constants/routes';
 
 const logInSchema = Yup.object().shape({
   email: Yup.string()
@@ -23,7 +24,7 @@ const LogIn = () => {
   useEffect(() => {
     if (loginStatus.isSuccess) {
       toast.success('You have successfully logged in');
-      navigate('/');
+      navigate(ROUTES.contacts);
     }
   }, [loginStatus, navigate]);
 

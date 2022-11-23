@@ -1,10 +1,18 @@
-import { Route, Routes } from 'react-router-dom';
 import { lazy } from 'react';
-import { CssBaseline } from '@mui/material';
+
+// Components
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import { SharedLayout, PrivateRoute, RestrictedRoute } from 'components';
+
+// Styles
+import { CssBaseline } from '@mui/material';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { SharedLayout } from './SharedLayout';
+// Constants
+import ROUTES from 'constants/routes';
+
+// Redux
 import { useCurrentUserQuery } from 'redux/authSlice';
 
 const Home = lazy(() => import('../pages/Home'));
@@ -19,12 +27,43 @@ function App() {
     <>
       <CssBaseline />
       <Routes>
-        <Route path="/" element={<SharedLayout />}>
-          <Route index element={<Home />} />
-          <Route path="contacts" element={<Contacts />} />
-          <Route path="register" element={<SignUp />} />
-          <Route path="login" element={<LogIn />} />
+        <Route path={ROUTES.home} element={<SharedLayout />}>
+          <Route
+            index
+            element={
+              <RestrictedRoute
+                component={<Home />}
+                restricted
+                redirectTo={ROUTES.contacts}
+              />
+            }
+          />
+          <Route
+            path={ROUTES.contacts}
+            element={<PrivateRoute component={<Contacts />} />}
+          />
+          <Route
+            path={ROUTES.register}
+            element={
+              <RestrictedRoute
+                restricted
+                component={<SignUp />}
+                redirectTo={ROUTES.contacts}
+              />
+            }
+          />
+          <Route
+            path={ROUTES.login}
+            element={
+              <RestrictedRoute
+                restricted
+                component={<LogIn />}
+                redirectTo={ROUTES.contacts}
+              />
+            }
+          />
         </Route>
+        <Route path="/*" element={<Navigate to={ROUTES.home} />} />
       </Routes>
       <ToastContainer autoClose={3000} />
     </>

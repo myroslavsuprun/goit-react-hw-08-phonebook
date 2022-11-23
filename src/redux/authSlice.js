@@ -14,9 +14,7 @@ export const authApi = createApi({
       return headers;
     },
   }),
-
   tagTypes: ['Credentials'],
-
   endpoints: builder => ({
     register: builder.mutation({
       query: credentials => {

@@ -1,7 +1,11 @@
-import { useTheme } from '@mui/material';
+// Hooks
+import { useEffect } from 'react';
+import useCredentials from 'hooks/useCredentials';
 
+// Components
 import { Link as RouterLink } from 'react-router-dom';
 import {
+  useTheme,
   AppBar as AppBarStyled,
   Box,
   IconButton,
@@ -9,26 +13,32 @@ import {
   Typography,
   Button,
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import { useSelector } from 'react-redux';
-import { useLogoutMutation } from 'redux/authSlice';
 import { toast } from 'react-toastify';
-import { AccountCircle } from '@mui/icons-material';
 
+// Icons
+import MenuIcon from '@mui/icons-material/Menu';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+
+// Constants
+import ROUTES from 'constants/routes';
 import links from './links';
-import { selectCredentials } from 'redux/selectors';
-import { useEffect } from 'react';
+
+// Redux
+import { useLogoutMutation } from 'redux/authSlice';
+import { useCurrentUserQuery } from 'redux/authSlice';
+import { Loader } from 'components/Loader';
 
 const AppBar = () => {
   const theme = useTheme();
-  const { token, user } = useSelector(selectCredentials);
+  const { isLoading: ifCurrentUserLoading } = useCurrentUserQuery();
+  const { ifLoggedIn, user } = useCredentials();
   const [logout, logoutStatus] = useLogoutMutation();
 
   useEffect(() => {
     if (logoutStatus.isSuccess) {
-      toast.success('You successfully have logged out');
+      toast.success('You have successfully logged out');
     }
-  }, [logoutStatus, logout]);
+  }, [logoutStatus]);
 
   const handleLogOutClick = () => {
     logout();
@@ -36,7 +46,7 @@ const AppBar = () => {
 
   return (
     <>
-      <Box sx={{ height: '64px', marginBottom: theme.spacing(5) }} />
+      <Box sx={{ height: '80px', marginBottom: theme.spacing(5) }} />
       <AppBarStyled component="nav">
         <Toolbar>
           <IconButton
@@ -55,7 +65,7 @@ const AppBar = () => {
             <Button
               style={{ color: '#fff' }}
               component={RouterLink}
-              to={token ? '/contacts' : ''}
+              to={ifLoggedIn ? ROUTES.contacts : ROUTES.home}
               variant="text"
             >
               Home
@@ -66,12 +76,13 @@ const AppBar = () => {
             sx={{
               listStyleType: 'none',
               display: { xs: 'none', sm: 'flex' },
-              gap: '10px',
+              gap: 1.2,
+              m: '0',
             }}
           >
             {links.map(({ id, text, to }) => {
               return (
-                token === '' && (
+                !ifLoggedIn && (
                   <Box
                     component="li"
                     sx={{ display: 'flex', alignItems: 'center' }}
@@ -89,22 +100,29 @@ const AppBar = () => {
                 )
               );
             })}
-            {token && (
+            {ifLoggedIn && (
               <>
                 <Box
                   component="li"
                   sx={{ display: 'flex', alignItems: 'center' }}
                 >
-                  <Typography>Hi, {user.name}</Typography>
-                  <IconButton
-                    size="large"
-                    aria-label="account of current user"
-                    aria-controls="menu-appbar"
-                    aria-haspopup="true"
-                    color="inherit"
-                  >
-                    <AccountCircle />
-                  </IconButton>
+                  {!ifCurrentUserLoading ? (
+                    <>
+                      {' '}
+                      <Typography>Hi, {user.name}</Typography>
+                      <IconButton
+                        size="large"
+                        aria-label="account of current user"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        color="inherit"
+                      >
+                        <AccountCircle />
+                      </IconButton>
+                    </>
+                  ) : (
+                    <Loader height="64" />
+                  )}
                 </Box>
                 <Box
                   component="li"
