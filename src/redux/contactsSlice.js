@@ -21,7 +21,9 @@ export const contactsApi = createApi({
       providesTags: result =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: 'Contacts', id })),
+              ...result.map(({ id }) => {
+                return { type: 'Contacts', id };
+              }),
               { type: 'Contacts', id: 'LIST' },
             ]
           : [{ type: 'Contacts', id: 'LIST' }],

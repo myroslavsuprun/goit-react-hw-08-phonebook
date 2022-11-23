@@ -5,7 +5,7 @@ const useCredentials = () => {
   const { token, user } = useSelector(selectCredentials);
   const ifLoggedIn = token === '' ? false : true;
 
-  return { user, ifLoggedIn };
+  return { user, ifLoggedIn, token };
 };
 
 export default useCredentials;
