@@ -11,11 +11,12 @@ import {
   Toolbar,
   Typography,
   Button,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { toast } from 'react-toastify';
 
 // Icons
-import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
 // Constants
@@ -28,6 +29,8 @@ import { useCurrentUserQuery } from 'redux/authSlice';
 import { Loader } from 'components/Loader';
 
 const AppBar = () => {
+  const theme = useTheme();
+  const ifWindowSizeSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const { isLoading: ifCurrentUserLoading } = useCurrentUserQuery();
   const { ifLoggedIn, user } = useCredentials();
   const [logout, logoutStatus] = useLogoutMutation();
@@ -53,22 +56,17 @@ const AppBar = () => {
   };
 
   return (
-    <>
-      <Box sx={{ height: '64px', marginBottom: 5 }} />
+    <header>
       <AppBarStyled component="nav">
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
+        <Toolbar
+          sx={{
+            height: 64,
+          }}
+        >
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            sx={{ flexGrow: 1, display: 'block' }}
           >
             <Button
               style={{ color: '#fff' }}
@@ -83,7 +81,7 @@ const AppBar = () => {
             component="ul"
             sx={{
               listStyleType: 'none',
-              display: { xs: 'none', sm: 'flex' },
+              display: 'flex',
               gap: 1.2,
               m: '0',
             }}
@@ -129,7 +127,7 @@ const AppBar = () => {
                       </IconButton>
                     </>
                   ) : (
-                    <Loader height="64" />
+                    <Loader height={64} />
                   )}
                 </Box>
                 <Box
@@ -140,6 +138,7 @@ const AppBar = () => {
                     onClick={handleLogOutClick}
                     color={'secondary'}
                     variant="contained"
+                    size={ifWindowSizeSmall ? 'small' : 'medium'}
                   >
                     Log Out
                   </Button>
@@ -149,7 +148,8 @@ const AppBar = () => {
           </Box>
         </Toolbar>
       </AppBarStyled>
-    </>
+      <Box sx={{ height: '64px', marginBottom: 5 }} />
+    </header>
   );
 };
 

@@ -36,7 +36,6 @@ export const authApi = createApi({
       },
       providesTags: ['Credentials'],
     }),
-
     logout: builder.mutation({
       query: () => {
         return {

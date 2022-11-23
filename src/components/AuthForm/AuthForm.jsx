@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import { TextField } from '@mui/material';
 
 const AuthForm = ({ formik }) => {
@@ -30,6 +32,10 @@ const AuthForm = ({ formik }) => {
       />
     </>
   );
+};
+
+AuthForm.propTypes = {
+  formik: PropTypes.object.isRequired,
 };
 
 export default AuthForm;

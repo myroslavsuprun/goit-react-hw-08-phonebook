@@ -1,5 +1,5 @@
+import PropTypes from 'prop-types';
 import { ThreeDots } from 'react-loader-spinner';
-
 import { LoaderWrapper } from './Loader.styled';
 
 export default function Loader({ height = 80 }) {
@@ -16,3 +16,7 @@ export default function Loader({ height = 80 }) {
     </LoaderWrapper>
   );
 }
+
+Loader.propTypes = {
+  height: PropTypes.number,
+};

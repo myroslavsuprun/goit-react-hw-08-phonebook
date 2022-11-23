@@ -1,40 +1,60 @@
-// import useModal from 'hooks/useModal';
-//  Button
-import { useTheme, Box, Typography } from '@mui/material';
+import useModal from 'hooks/useModal';
+import { useTheme, Button, Box, Typography } from '@mui/material';
 import {
   AddContactForm,
   ContactsList,
   ContactsFilter,
-  // Modal,
+  Modal,
 } from 'components';
 
 const Contacts = () => {
-  // const { open: ifModalOpen, handleToggle: handleModalToggle } = useModal();
+  const { open: ifModalOpen, handleToggle: handleModalToggle } = useModal();
   const theme = useTheme();
 
-  // const handleOpenModal = () => {
-  //   handleModalToggle();
-  // };
+  const handleOpenModal = () => {
+    handleModalToggle();
+  };
 
   return (
     <>
       <Box
         sx={{
           display: 'flex',
-          alignItems: 'start',
           justifyContent: 'center',
-          gap: 10,
+          mb: 5,
+
+          [theme.breakpoints.down('sm')]: {
+            gap: 3,
+            flexDirection: 'column',
+            alignItems: 'center',
+          },
+          [theme.breakpoints.up('sm')]: {
+            gap: 10,
+            alignItems: 'start',
+          },
         }}
       >
-        {/* toggleModal={handleModalToggle} */}
-        <AddContactForm />
-        {/* Modal =( */}
-        {/* <Button variant="contained" elevation="4" onClick={handleOpenModal}>
-        Add new Contact
-      </Button> */}
-        {/* <Modal open={ifModalOpen} handleClose={handleModalToggle}>
-        <AddContactForm toggleModal={handleModalToggle} />
-      </Modal> */}
+        <Button
+          sx={{
+            [theme.breakpoints.up('sm')]: {
+              display: 'none',
+            },
+          }}
+          variant="contained"
+          elevation="3"
+          onClick={handleOpenModal}
+        >
+          Add new Contact
+        </Button>
+        <Box
+          sx={{
+            [theme.breakpoints.down('sm')]: {
+              display: 'none',
+            },
+          }}
+        >
+          <AddContactForm />
+        </Box>
         <Box
           sx={{
             display: 'flex',
@@ -42,13 +62,16 @@ const Contacts = () => {
             width: 250,
           }}
         >
-          <Typography variant="h5" align="left" mb={theme.spacing(1)}>
+          <Typography variant="h5" align="center" mb={theme.spacing(1)}>
             Contacts
           </Typography>
           <ContactsFilter />
           <ContactsList />
         </Box>
       </Box>
+      <Modal open={ifModalOpen} handleClose={handleModalToggle}>
+        <AddContactForm toggleModal={handleModalToggle} />
+      </Modal>
     </>
   );
 };

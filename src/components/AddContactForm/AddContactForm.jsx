@@ -6,9 +6,17 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import { Box, TextField, Button, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  useTheme,
+  useMediaQuery,
+} from '@mui/material';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 const additionSchema = Yup.object().shape({
   name: Yup.string()
@@ -26,10 +34,12 @@ const additionSchema = Yup.object().shape({
     ),
 });
 
-function AddContactForm() {
+function AddContactForm({ toggleModal }) {
+  const theme = useTheme();
+  const ifWindowSizeSmall = useMediaQuery(theme.breakpoints.down('sm'));
+
   const [addContact, addContactStatus] = useAddContactMutation();
   const { data: contacts } = useGetContactsQuery();
-  const theme = useTheme();
 
   const formik = useFormik({
     initialValues: {
@@ -44,11 +54,13 @@ function AddContactForm() {
       });
 
       if (foundContact) {
-        return alert(`${name} is already in contacts`);
+        return toast.warning(`${name} is already in contacts`);
       }
 
       addContact({ name, number });
-      // toggleModal();
+      if (ifWindowSizeSmall) {
+        toggleModal();
+      }
       formik.resetForm();
     },
   });
@@ -60,18 +72,26 @@ function AddContactForm() {
   }, [addContactStatus]);
 
   return (
-    <Box sx={{ position: 'relative', width: 300 }}>
+    <Box
+      sx={{
+        position: 'relative',
+        maxWidth: 300,
+        minWidth: 270,
+      }}
+    >
       <Box
         component="form"
         sx={{
           display: 'flex',
           flexDirection: 'column',
           width: 'inherit',
-          position: 'fixed',
+          [theme.breakpoints.up('sm')]: {
+            position: 'fixed',
+          },
         }}
         onSubmit={formik.handleSubmit}
       >
-        <Typography variant="h5" align="left" mb={theme.spacing(1)}>
+        <Typography variant="h5" align="center" mb={1}>
           Add new contact
         </Typography>
         <TextField
@@ -114,5 +134,9 @@ function AddContactForm() {
     </Box>
   );
 }
+
+AddContactForm.propTypes = {
+  toggleModal: PropTypes.func,
+};
 
 export default AddContactForm;

@@ -1,14 +1,19 @@
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-
-import { Typography, Box, useTheme, Button } from '@mui/material';
-
-import { AuthForm } from 'components';
-import { useLoginMutation } from 'redux/authSlice';
-import { toast } from 'react-toastify';
+// Hooks
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useFormik } from 'formik';
+import { useLoginMutation } from 'redux/authSlice';
+
+// Components
+import { Typography, Box, useTheme, Button } from '@mui/material';
+import { AuthForm } from 'components';
+import { toast } from 'react-toastify';
+
+// Constants
 import ROUTES from 'constants/routes';
+
+// Form validation
+import * as Yup from 'yup';
 
 const logInSchema = Yup.object().shape({
   email: Yup.string()
@@ -49,7 +54,7 @@ const LogIn = () => {
           flexDirection: 'column',
           gap: theme.spacing(1.5),
           margin: '0 auto',
-          width: '340px',
+          maxWidth: '340px',
         }}
         onSubmit={formik.handleSubmit}
       >

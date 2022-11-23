@@ -63,8 +63,8 @@ const SignUp = () => {
         display: 'flex',
         flexDirection: 'column',
         margin: '0 auto',
-        gap: theme.spacing(1.5),
-        width: '340px',
+        gap: 1.5,
+        maxWidth: '340px',
       }}
       onSubmit={formik.handleSubmit}
     >

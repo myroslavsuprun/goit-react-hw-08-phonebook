@@ -6,7 +6,7 @@ const Modal = ({ children, open, handleClose }) => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    maxWidth: 400,
     bgcolor: 'background.paper',
     borderRadius: '5px',
     boxShadow: 24,

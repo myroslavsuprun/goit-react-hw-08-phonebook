@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import { useDeleteContactMutation } from 'redux/contactsSlice';
 
 import { IconButton, Typography, Box } from '@mui/material';
@@ -9,7 +11,7 @@ const Contact = ({ name, phone, id }) => {
   return (
     <Box
       sx={{
-        width: 300,
+        maxWidth: 300,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -31,6 +33,12 @@ const Contact = ({ name, phone, id }) => {
       </IconButton>
     </Box>
   );
+};
+
+Contact.propTypes = {
+  name: PropTypes.string.isRequired,
+  phone: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default Contact;
