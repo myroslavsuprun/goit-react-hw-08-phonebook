@@ -1,9 +1,9 @@
 // Hooks
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useCredentials from 'hooks/useCredentials';
 
 // Components
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {
   AppBar as AppBarStyled,
   Box,
@@ -31,6 +31,8 @@ const AppBar = () => {
   const { isLoading: ifCurrentUserLoading } = useCurrentUserQuery();
   const { ifLoggedIn, user } = useCredentials();
   const [logout, logoutStatus] = useLogoutMutation();
+  const navigate = useNavigate();
+  const [ifNavigated, setIfNavigated] = useState(true);
 
   useEffect(() => {
     if (logoutStatus.isSuccess) {
@@ -38,8 +40,16 @@ const AppBar = () => {
     }
   }, [logoutStatus]);
 
+  useEffect(() => {
+    if (logoutStatus.isSuccess && !ifNavigated) {
+      navigate(ROUTES.home);
+      setIfNavigated(true);
+    }
+  }, [navigate, logoutStatus, ifNavigated]);
+
   const handleLogOutClick = () => {
     logout();
+    setIfNavigated(false);
   };
 
   return (
