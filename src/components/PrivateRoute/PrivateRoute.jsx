@@ -6,8 +6,10 @@ import { useCurrentUserQuery } from 'redux/authSlice';
 import useCredentials from 'hooks/useCredentials';
 
 const PrivateRoute = ({ component: Component, redirectTo = ROUTES.home }) => {
-  const { isSuccess: ifCurrentUserFetched } = useCurrentUserQuery();
   const { ifLoggedIn } = useCredentials();
+  const { isSuccess: ifCurrentUserFetched } = useCurrentUserQuery(null, {
+    skip: !ifLoggedIn,
+  });
 
   const shouldRedirect = !ifCurrentUserFetched && !ifLoggedIn;
 

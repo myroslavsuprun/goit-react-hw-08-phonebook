@@ -14,6 +14,7 @@ import ROUTES from 'constants/routes';
 
 // Redux
 import { useCurrentUserQuery } from 'redux/authSlice';
+import useCredentials from 'hooks/useCredentials';
 
 const Home = lazy(() => import('../pages/Home'));
 const LogIn = lazy(() => import('../pages/LogIn/LogIn'));
@@ -21,7 +22,8 @@ const SignUp = lazy(() => import('../pages/SignUp/SignUp'));
 const Contacts = lazy(() => import('../pages/Contacts/Contacts'));
 
 function App() {
-  useCurrentUserQuery();
+  const { ifLoggedIn } = useCredentials();
+  useCurrentUserQuery(null, { skip: !ifLoggedIn });
 
   return (
     <>

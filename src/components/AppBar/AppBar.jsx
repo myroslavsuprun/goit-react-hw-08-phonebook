@@ -30,9 +30,11 @@ import { Loader } from 'components/Loader';
 
 const AppBar = () => {
   const theme = useTheme();
-  const ifWindowSizeSmall = useMediaQuery(theme.breakpoints.down('sm'));
-  const { isLoading: ifCurrentUserLoading } = useCurrentUserQuery();
   const { ifLoggedIn, user } = useCredentials();
+  const ifWindowSizeSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const { isLoading: ifCurrentUserLoading } = useCurrentUserQuery(null, {
+    skip: !ifLoggedIn,
+  });
   const [logout, logoutStatus] = useLogoutMutation();
   const navigate = useNavigate();
   const [ifNavigated, setIfNavigated] = useState(true);

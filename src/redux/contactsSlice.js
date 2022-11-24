@@ -19,14 +19,10 @@ export const contactsApi = createApi({
     getContacts: builder.query({
       query: () => `/contacts`,
       providesTags: result =>
-        result
-          ? [
-              ...result.map(({ id }) => {
-                return { type: 'Contacts', id };
-              }),
-              { type: 'Contacts', id: 'LIST' },
-            ]
-          : [{ type: 'Contacts', id: 'LIST' }],
+        result && [
+          ...result.map(({ id }) => ({ type: 'Contacts', id })),
+          { type: 'Contacts', id: 'LIST' },
+        ],
     }),
 
     deleteContact: builder.mutation({
